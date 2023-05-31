@@ -1,6 +1,6 @@
 %% Runs all WP functions and compares them to the _p functions
 
-add_paths()
+%add paths first
 
 %% -------------Initialization of different parameters---------------------
 %framework function to define parameters
