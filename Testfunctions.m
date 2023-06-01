@@ -17,8 +17,10 @@ mapping = generate_mapping(4,'QAM');
 lenna_symbols=import_lenna_picture_p(mapping);% Using _p function so that following functions are comparable
 try
 lenna_symbols_WP=import_lenna_picture(mapping);
-catch
+catch ME
     warning('WP1 failed critically, assigning 0');
+    disp(ME.message)
+    disp(ME.stack(:,1))
     lenna_symbols_WP=0;
 end
 if isequal(lenna_symbols,lenna_symbols_WP)
@@ -32,8 +34,10 @@ end
 data_freq_matrix = rearrange_data_p(lenna_symbols,parameter);
 try
 data_freq_matrix_WP = rearrange_data(lenna_symbols,parameter);
-catch
+catch ME
     warning('WP2 failed critically, assigning 0');
+    disp(ME.message)
+    disp(ME.stack(:,1))
     data_freq_matrix_WP=0;
 end
 if isequal(data_freq_matrix,data_freq_matrix_WP)
@@ -47,8 +51,10 @@ end
 data_frec_with_pilot = insert_pilot_symbols_p(data_freq_matrix,training_freq,parameter);
 try
 data_frec_with_pilot_WP = insert_pilot_symbols(data_freq_matrix,training_freq,parameter);
-catch
+catch ME
     warning('WP3 failed critically, assigning 0');
+    disp(ME.message)
+    disp(ME.stack(:,1))
     data_frec_with_pilot_WP=0;
 end
 if isequal(data_frec_with_pilot,data_frec_with_pilot_WP)
@@ -62,8 +68,10 @@ end
 frames_frec_cell = create_frame_structure_p(data_frec_with_pilot,shortPreamble_freq, longPreamble_freq, training_freq, mapping, parameter);
 try
 frames_frec_cell_WP = create_frame_structure(data_frec_with_pilot,shortPreamble_freq, longPreamble_freq, training_freq, mapping, parameter);
-catch
+catch ME
     warning('WP4 failed critically, assigning 0');
+    disp(ME.message)
+    disp(ME.stack(:,1))
     frames_frec_cell_WP=0;
 end
 if isequal(frames_frec_cell,frames_frec_cell_WP)
@@ -77,8 +85,10 @@ end
 frames_time_cell = transform_to_time_domain_p(frames_frec_cell, parameter);
 try
 frames_time_cell_WP = transform_to_time_domain(frames_frec_cell, parameter);
-catch
+catch ME
     warning('WP5 failed critically, assigning 0');
+    disp(ME.message)
+    disp(ME.stack(:,1))
     frames_time_cell_WP=0;
 end
 if isequal(frames_time_cell,frames_time_cell_WP)
@@ -92,8 +102,10 @@ end
 frames = add_guard_interval_p(frames_time_cell, parameter);
 try
 frames_WP = add_guard_interval(frames_time_cell, parameter);
-catch
+catch ME
     warning('WP6 failed critically, assigning 0');
+    disp(ME.message)
+    disp(ME.stack(:,1))
     frames_WP=0;
 end
 if isequal(frames,frames_WP)
