@@ -7,6 +7,10 @@ function frames = add_guard_interval(frames_time_cell, parameter)
 % Output:  frames            -> cell array with all frames in time domain with guard interval
 %                            -> each cell contains {80x134 complex double}
 
+for i=1:length(frames_time_cell)%for each frame
+    iframe=frames_time_cell{i};% take i-th frame
+    frames{i}=[iframe(end-parameter.Nguard+1:end,:);iframe];
+end
 
 end
 
