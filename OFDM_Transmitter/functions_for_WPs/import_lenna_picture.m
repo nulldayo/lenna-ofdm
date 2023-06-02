@@ -7,7 +7,7 @@ function lenna_symbols = import_lenna_picture(mapping)
 im = imread('LENNA_Scaled96.JPG','JPG'); %96x96 intensity values,0-255
 imserial = im(:); %columns of im in series
 
-imserial_bin = de2bi(imserial); %convert to binary
+imserial_bin = de2bi_(imserial); %convert to binary
 imserial_bin = imserial_bin.';
 imserial_bin = imserial_bin(:); %-> serialise values by line is one value
 
