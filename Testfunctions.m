@@ -23,9 +23,9 @@ catch ME
     lenna_symbols_WP=0;
 end
 if isequal(lenna_symbols,lenna_symbols_WP)
-    disp('WP1 successfull');
+    disp('WP1 successful');
 else
-    disp('WP1 unsuccessfull, note that symbols might still be correct just not equal to the _p file');
+    disp('WP1 unsuccessful, note that symbols might still be correct just not equal to the _p file');
 end
 
 
@@ -40,9 +40,9 @@ catch ME
     data_freq_matrix_WP=0;
 end
 if isequal(data_freq_matrix,data_freq_matrix_WP)
-    disp('WP2 successfull');
+    disp('WP2 successful');
 else
-    disp('WP2 unsuccessfull');
+    disp('WP2 unsuccessful');
 end
 
 
@@ -57,9 +57,9 @@ catch ME
     data_frec_with_pilot_WP=0;
 end
 if isequal(data_frec_with_pilot,data_frec_with_pilot_WP)
-    disp('WP3 successfull');
+    disp('WP3 successful');
 else
-    disp('WP3 unsuccessfull');
+    disp('WP3 unsuccessful');
 end
 
 
@@ -74,9 +74,9 @@ catch ME
     frames_frec_cell_WP=0;
 end
 if isequal(frames_frec_cell,frames_frec_cell_WP)
-    disp('WP4 successfull');
+    disp('WP4 successful');
 else
-    disp('WP4 unsuccessfull');
+    disp('WP4 unsuccessful');
 end
 
 
@@ -91,9 +91,9 @@ catch ME
     frames_time_cell_WP=0;
 end
 if isequal(frames_time_cell,frames_time_cell_WP)
-    disp('WP5 successfull');
+    disp('WP5 successful');
 else
-    disp('WP5 unsuccessfull');
+    disp('WP5 unsuccessful');
 end
 
 
@@ -108,9 +108,9 @@ catch ME
     frames_WP=0;
 end
 if isequal(frames,frames_WP)
-    disp('WP6 successfull');
+    disp('WP6 successful');
 else
-    disp('WP6 unsuccessfull');
+    disp('WP6 unsuccessful');
 end
 
 
