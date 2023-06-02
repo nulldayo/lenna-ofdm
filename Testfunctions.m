@@ -1,7 +1,7 @@
 %% Runs all WP functions and compares them to the _p functions
 
 %add paths first
-
+function []=Testfunctions()
 %% -------------Initialization of different parameters---------------------
 %framework function to define parameters
 parameter = predefine_parameter();
@@ -112,6 +112,7 @@ if isequal(frames,frames_WP)
     disp('WP6 successfull');
 else
     disp('WP6 unsuccessfull');
+end
 end
 
 
