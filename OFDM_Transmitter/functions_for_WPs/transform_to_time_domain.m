@@ -8,7 +8,9 @@ function frames_time_cell = transform_to_time_domain(frames_frec_cell, parameter
 %          parameter         -> struct with predefined OFDM parameter
 % Output:  frames_time_cell  -> cell array with all frames in time domain
 %                            -> each cell contains {64x134 complex double}
-
+for i=1:length(frames_frec_cell)
+    frames_time_cell{i}=ifft(frames_frec_cell{i},parameter.Nfft,1)*sqrt(parameter.Nfft);
+end
 
 end
 
