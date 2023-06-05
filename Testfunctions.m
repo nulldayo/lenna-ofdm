@@ -268,13 +268,18 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
     end
     %
     channel_coefficients = channel_estimation_p(frame_freq, training_freq);
-    if abs(channel_coefficients-channel_coefficientsWP)<1e-4
+
+    if isequal(isinf(channel_coefficients),isinf(channel_coefficientsWP))
+    if abs(channel_coefficients(~isinf(channel_coefficients))-channel_coefficientsWP(~isinf(channel_coefficientsWP)))<1e-4
         if ~WPflag(12)
         WPflag(12)=true;
         disp('WP12 successful');
         end
     else
     disp('WP12 unsuccessful');
+    end
+    else
+       disp('WP12 unsuccessful'); 
     end
     
     
