@@ -7,5 +7,8 @@ function frame_freq = transform_to_frequency_domain(frame_noGuard, parameter)
 %           parameter -> struct with predefined OFDM parameter
 % Output:   frame_noGuard -> 64x131 complex double
 
+frame_freq = fft(frame_noGuard, 64);
+frame_freq = frame_freq/sqrt(64);
+
 end
 

@@ -5,6 +5,7 @@ function frame_noGuard = remove_guard_interval(frame_with_guard_noFFO, parameter
 %           parameter -> struct with predefined OFDM parameter
 % Output:   frame_noGuard -> 64x131 complex double
 
+frame_noGuard = frame_with_guard_noFFO(parameter.Nguard+1:size(frame_with_guard_noFFO,1),:);
 
 end
 
