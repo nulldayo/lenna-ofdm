@@ -7,6 +7,13 @@ function frame_with_guard_noFFO = correct_FFO(correctFFO, frame_with_guard, FFO_
 %           parameter -> struct with predefined OFDM parameter
 % Output:   frame_with_guard_noFFO -> 80x131 complex double
 
+if correctFFO
+    for l = 1:(parameter.Nfft+parameter.Nguard)
+     frame_with_guard_noFFO(l,:) = frame_with_guard(l,:)*exp(-1j*2*pi*FFO_est*l/(parameter.Nfft+parameter.Nguard));
+    end
+else
+    frame_with_guard_noFFO = frame_with_guard;
+end
 
 end
 
