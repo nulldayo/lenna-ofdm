@@ -136,8 +136,8 @@ end
 % load('rec_frame.mat','rec_frame');
 
 % artificially downgrade transmission
-activation_flag = false;
-noise_variance = 50; % noise variance in dB
+activation_flag = true;
+noise_variance = 10; % noise variance in dB
 delta_F = 0.4;
 rec_frame = add_noise_and_cfo(rec_frame, noise_variance, delta_F, parameter, activation_flag);
 
