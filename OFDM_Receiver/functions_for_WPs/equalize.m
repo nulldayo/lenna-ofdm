@@ -8,5 +8,6 @@ function frame_equalized = equalize(frame_freq, channel_coefficiants, parameter)
 %           parameter -> struct with predefined OFDM parameter
 % Output:   frame_equalized -> 64x130 complex double
 
+frame_equalized=frame_freq(:,2:end)./repmat(channel_coefficiants(:),1,parameter.Nofdm);
 end
 
