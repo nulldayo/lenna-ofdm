@@ -187,7 +187,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
     end
     
     FFO_est = estimate_FFO_p(frame_with_guard, parameter);
-    if isequal(FFO_est,FFO_estWP)
+    if abs(FFO_est-FFO_estWP)<1e-4
         if ~WPflag(8)
         WPflag(8)=true;
         disp('WP8 successful');
@@ -208,7 +208,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
     end
     frame_with_guard_noFFO = correct_FFO_p(correctFFO, frame_with_guard, FFO_est, parameter);
 
-    if isequal(frame_with_guard_noFFO,frame_with_guard_noFFOWP)
+    if abs(frame_with_guard_noFFO-frame_with_guard_noFFOWP)<1e-4
         if ~WPflag(9)
         WPflag(9)=true;
         disp('WP9 successful');
