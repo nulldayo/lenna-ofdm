@@ -137,7 +137,7 @@ end
 
 % artificially downgrade transmission
 activation_flag = true;
-noise_variance = 10; % noise variance in dB
+noise_variance = -20; % noise variance in dB
 delta_F = 0.4;
 rec_frame = add_noise_and_cfo(rec_frame, noise_variance, delta_F, parameter, activation_flag);
 
@@ -369,7 +369,7 @@ catch ME
         disp(ME.stack(:,1))
         lenna_RGBWP=0;
 end
-lenna_RGB = reconstruct_RGB_values_p(lenna_binary);,
+lenna_RGB = reconstruct_RGB_values_p(lenna_binary);
 if isequal(lenna_RGB,lenna_RGBWP)
         if ~WPflag(17)
         WPflag(17)=true;
