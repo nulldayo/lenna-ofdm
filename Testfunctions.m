@@ -114,5 +114,269 @@ else
 end
 
 
+for i=1:length(frames)%simulate ideal received frame
+    frame=frames{i};
+    frame(:,1:3)=[];
+    rec_frame{i}=frame(:);
+end
 
+%% -------------Initialization of different parameters---------------------
+%some parts are commented out because they are either identical for
+%transmit and receive or because they are simulated elsewhere
+% % framework function to define parameters
+% parameter = predefine_parameter();
+% 
+% % framework function to create mapping
+% mapping = generate_mapping(4,'QAM'); 
+% 
+% % framework function to import preambles and training data
+% [shortPreamble_freq, longPreamble_freq, training_freq] = get_preamble_and_training(parameter);
+% 
+% % load the received frame
+% load('rec_frame.mat','rec_frame');
+
+% artificially downgrade transmission
+activation_flag = false;
+noise_variance = 50; % noise variance in dB
+delta_F = 0.4;
+rec_frame = add_noise_and_cfo(rec_frame, noise_variance, delta_F, parameter, activation_flag);
+
+% number of received frames
+Nframe = numel(rec_frame);
+
+% number of Frames needed to transmit Lenna (assumed to be known at the receiver)
+parameter.Nframes_lenna = 6;
+
+% cell array for frames to reconstruct lenna picture
+lenna_frames = cell(1,parameter.Nframes_lenna);
+lenna_frames(1,:) = {zeros(length(parameter.Nused_data_idx),parameter.Nofdm-1)};
+
+%% --------------------------------Working packages------------------------
+WPflag=false(17,1);
+for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmission
+    frame_data = rec_frame{idx};
+    
+    %WP7
+    try
+    frame_with_guardWP = rearrange_frame_data(frame_data, parameter);
+    catch ME
+        warning('WP7 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        frame_with_guardWP=0;
+    end
+    frame_with_guard = rearrange_frame_data_p(frame_data, parameter);
+
+    if isequal(frame_with_guardWP,frame_with_guard)
+        if ~WPflag(7)
+        WPflag(7)=true;
+        disp('WP7 successful');
+        end
+    else
+    disp('WP7 unsuccessful');
+    end
+
+    %WP8
+    try
+    FFO_estWP = estimate_FFO(frame_with_guard, parameter);
+    catch ME
+        warning('WP8 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        FFO_estWP=0;
+    end
+    
+    FFO_est = estimate_FFO_p(frame_with_guard, parameter);
+    if isequal(FFO_est,FFO_estWP)
+        if ~WPflag(8)
+        WPflag(8)=true;
+        disp('WP8 successful');
+        end
+    else
+    disp('WP8 unsuccessful');
+    end
+
+    %WP9
+    correctFFO = true;
+    try
+    frame_with_guard_noFFOWP = correct_FFO(correctFFO, frame_with_guard, FFO_est, parameter);
+    catch ME
+        warning('WP9 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        frame_with_guard_noFFOWP=0;
+    end
+    frame_with_guard_noFFO = correct_FFO_p(correctFFO, frame_with_guard, FFO_est, parameter);
+
+    if isequal(frame_with_guard_noFFO,frame_with_guard_noFFOWP)
+        if ~WPflag(9)
+        WPflag(9)=true;
+        disp('WP9 successful');
+        end
+    else
+    disp('WP9 unsuccessful');
+    end
+    
+    %WP10
+    try
+    frame_noGuardWP = remove_guard_interval(frame_with_guard_noFFO, parameter);
+    catch ME
+        warning('WP10 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        frame_noGuardWP=0;
+    end
+    %
+    frame_noGuard = remove_guard_interval_p(frame_with_guard_noFFO, parameter);
+    if isequal(frame_with_guard_noFFO,frame_with_guard_noFFOWP)
+        if ~WPflag(10)
+        WPflag(10)=true;
+        disp('WP10 successful');
+        end
+    else
+    disp('WP10 unsuccessful');
+    end
+
+    %WP11
+    try
+        frame_freqWP = transform_to_frequency_domain(frame_noGuard, parameter);
+    catch ME
+        warning('WP11 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        frame_freqWP=0;
+    end
+    %
+    frame_freq = transform_to_frequency_domain_p(frame_noGuard, parameter);
+    if isequal(frame_freq,frame_freqWP)
+        if ~WPflag(11)
+        WPflag(11)=true;
+        disp('WP11 successful');
+        end
+    else
+    disp('WP11 unsuccessful');
+    end
+
+    %WP12
+    try
+        channel_coefficientsWP = channel_estimation(frame_freq, training_freq);
+    catch ME
+        warning('WP12 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        channel_coefficientsWP=0;
+    end
+    %
+    channel_coefficients = channel_estimation_p(frame_freq, training_freq);
+    if isequal(channel_coefficientsWP,channel_coefficients)
+        if ~WPflag(12)
+        WPflag(12)=true;
+        disp('WP12 successful');
+        end
+    else
+    disp('WP12 unsuccessful');
+    end
+    
+    
+    %WP13
+
+    try
+        frame_equalizedWP = equalize(frame_freq, channel_coefficients, parameter);
+    catch ME
+        warning('WP13 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        frame_equalizedWP=0;
+    end
+    %
+    frame_equalized = equalize_p(frame_freq, channel_coefficients, parameter);
+    if isequal(frame_equalized,frame_equalizedWP)
+        if ~WPflag(13)
+        WPflag(13)=true;
+        disp('WP13 successful');
+        end
+    else
+    disp('WP13 unsuccessful');
+    end
+    
+    %WP14
+    mode = 'average';
+    %mode = 'weighted_average';
+    %mode = 'none';
+    try
+    frame_no_RFOWP = remove_RFO(frame_equalized, training_freq, channel_coefficients, parameter, mode);
+    catch ME
+        warning('WP14 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        frame_no_RFOWP=0;
+    end
+    frame_no_RFO = remove_RFO_p(frame_equalized, training_freq, channel_coefficients, parameter, mode);
+    if isequal(frame_no_RFO,frame_no_RFOWP)
+        if ~WPflag(14)
+        WPflag(14)=true;
+        disp('WP14 successful');
+        end
+    else
+    disp('WP14 unsuccessful');
+    end
+    %WP15
+    try
+    lenna_framesWP = classify_frame(lenna_frames, frame_no_RFO, mapping, parameter);
+    catch ME
+        warning('WP15 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        lenna_framesWP=0;
+    end
+    lenna_frames = classify_frame_p(lenna_frames, frame_no_RFO, mapping, parameter);
+     if isequal(lenna_frames,lenna_framesWP)
+        if ~WPflag(15)
+        WPflag(15)=true;
+        disp('WP15 successful');
+        end
+    else
+    disp('WP15 unsuccessful');
+    end
+      
+end
+
+%WP16
+try
+lenna_binaryWP = demap_frames(lenna_frames, mapping);
+catch ME
+        warning('WP16 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        lenna_binaryWP=0;
+end
+lenna_binary = demap_frames_p(lenna_frames, mapping);
+if isequal(lenna_binary,lenna_binaryWP)
+        if ~WPflag(16)
+        WPflag(16)=true;
+        disp('WP16 successful');
+        end
+    else
+    disp('WP16 unsuccessful');
+end
+
+%WP17
+try
+lenna_RGBWP = reconstruct_RGB_values(lenna_binary);
+catch ME
+        warning('WP16 failed critically, assigning 0');
+        disp(ME.message)
+        disp(ME.stack(:,1))
+        lenna_RGBWP=0;
+end
+lenna_RGB = reconstruct_RGB_values_p(lenna_binary);,
+if isequal(lenna_RGB,lenna_RGBWP)
+        if ~WPflag(17)
+        WPflag(17)=true;
+        disp('WP17 successful');
+        end
+    else
+    disp('WP17 unsuccessful');
+end
+imshow(lenna_RGB);
 
