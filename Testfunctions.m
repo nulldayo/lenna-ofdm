@@ -183,7 +183,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
         warning('WP8 failed critically, assigning 0');
         disp(ME.message)
         disp(ME.stack(:,1))
-        FFO_estWP=0;
+        FFO_estWP=NaN;
     end
     
     FFO_est = estimate_FFO_p(frame_with_guard, parameter);
