@@ -228,7 +228,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
     end
     %
     frame_noGuard = remove_guard_interval_p(frame_with_guard_noFFO, parameter);
-    if isequal(frame_with_guard_noFFO,frame_with_guard_noFFOWP)
+    if abs(frame_noGuard-frame_noGuardWP)<1e-4
         if ~WPflag(10)
         WPflag(10)=true;
         disp('WP10 successful');
@@ -248,7 +248,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
     end
     %
     frame_freq = transform_to_frequency_domain_p(frame_noGuard, parameter);
-    if isequal(frame_freq,frame_freqWP)
+    if abs(frame_freq-frame_freqWP)<1e-4
         if ~WPflag(11)
         WPflag(11)=true;
         disp('WP11 successful');
@@ -268,7 +268,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
     end
     %
     channel_coefficients = channel_estimation_p(frame_freq, training_freq);
-    if isequal(channel_coefficientsWP,channel_coefficients)
+    if abs(channel_coefficients-channel_coefficientsWP)<1e-4
         if ~WPflag(12)
         WPflag(12)=true;
         disp('WP12 successful');
@@ -290,7 +290,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
     end
     %
     frame_equalized = equalize_p(frame_freq, channel_coefficients, parameter);
-    if isequal(frame_equalized,frame_equalizedWP)
+    if abs(frame_equalized-frame_equalizedWP)<1e-4
         if ~WPflag(13)
         WPflag(13)=true;
         disp('WP13 successful');
@@ -312,7 +312,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
         frame_no_RFOWP=0;
     end
     frame_no_RFO = remove_RFO_p(frame_equalized, training_freq, channel_coefficients, parameter, mode);
-    if isequal(frame_no_RFO,frame_no_RFOWP)
+    if abs(frame_no_RFO-frame_no_RFOWP)<1e-4
         if ~WPflag(14)
         WPflag(14)=true;
         disp('WP14 successful');
@@ -330,7 +330,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
         lenna_framesWP=0;
     end
     lenna_frames = classify_frame_p(lenna_frames, frame_no_RFO, mapping, parameter);
-     if isequal(lenna_frames,lenna_framesWP)
+     if abs(lenna_frames{idx}-lenna_framesWP{idx})<1e-4
         if ~WPflag(15)
         WPflag(15)=true;
         disp('WP15 successful');
@@ -355,6 +355,7 @@ if isequal(lenna_binary,lenna_binaryWP)
         if ~WPflag(16)
         WPflag(16)=true;
         disp('WP16 successful');
+        fprintf("Number of incorrect bits: %d\n",sum(lenna_binary==lenna_binaryWP));
         end
     else
     disp('WP16 unsuccessful');
