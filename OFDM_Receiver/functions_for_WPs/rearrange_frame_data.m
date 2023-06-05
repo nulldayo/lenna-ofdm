@@ -6,6 +6,7 @@ function frame_with_guard = rearrange_frame_data(frame_data, parameter)
 %           parameter -> struct with predefined OFDM parameter
 % Output:   frame_with_guard -> 80x131 complex double
 
+frame_with_guard=reshape(frame_data,parameter.Nfft+parameter.Nguard,parameter.Nofdm+1);
 
 end
 
