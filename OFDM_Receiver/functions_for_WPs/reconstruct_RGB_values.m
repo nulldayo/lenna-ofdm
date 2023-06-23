@@ -7,6 +7,11 @@ function lenna_RGB = reconstruct_RGB_values(lenna_binary)
 % Input:    lenna_binary -> 1x74304 logical           
 % Output:   lenna_RGB -> 96x96 uint8
 
+lenna_binary=reshape(lenna_binary(:),8,[]).';
+lenna_uint8=uint8(bi2de_(lenna_binary));
+lenna_uint8(96*96+1:end)=[];
+lenna_RGB=reshape(lenna_uint8,96,96);
+
 
 end
 
