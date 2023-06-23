@@ -363,10 +363,11 @@ if isequal(lenna_binary,lenna_binaryWP)
         if ~WPflag(16)
         WPflag(16)=true;
         disp('WP16 successful');
-        fprintf("Number of incorrect bits: %d\n",sum(lenna_binary==lenna_binaryWP));
+        
         end
     else
     disp('WP16 unsuccessful');
+    fprintf("Number of incorrect bits: %d\n",sum(lenna_binary~=lenna_binaryWP));
 end
 
 %WP17
