@@ -374,7 +374,7 @@ end
 try
 lenna_RGBWP = reconstruct_RGB_values(lenna_binary);
 catch ME
-        warning('WP16 failed critically, assigning 0');
+        warning('WP17 failed critically, assigning 0');
         disp(ME.message)
         disp(ME.stack(:,1))
         lenna_RGBWP=0;
