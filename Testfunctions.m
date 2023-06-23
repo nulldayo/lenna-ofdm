@@ -151,6 +151,9 @@ parameter.Nframes_lenna = 6;
 lenna_frames = cell(1,parameter.Nframes_lenna);
 lenna_frames(1,:) = {zeros(length(parameter.Nused_data_idx),parameter.Nofdm-1)};
 
+lenna_framesWP = cell(1,parameter.Nframes_lenna);
+lenna_framesWP(1,:) = {zeros(length(parameter.Nused_data_idx),parameter.Nofdm-1)};
+
 %% --------------------------------Working packages------------------------
 WPflag=false(17,1);
 for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmission
@@ -327,7 +330,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
     end
     %WP15
     try
-    lenna_framesWP = classify_frame(lenna_frames, frame_no_RFO, mapping, parameter);
+    lenna_framesWP = classify_frame(lenna_framesWP, frame_no_RFO, mapping, parameter);
     catch ME
         warning('WP15 failed critically, assigning 0');
         disp(ME.message)
