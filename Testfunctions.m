@@ -335,7 +335,7 @@ for idx=1:Nframe   %differs from real receiver here due to "simulated"  transmis
         warning('WP15 failed critically, assigning 0');
         disp(ME.message)
         disp(ME.stack(:,1))
-        lenna_framesWP=0;
+        lenna_framesWP(idx)={0};
     end
     lenna_frames = classify_frame_p(lenna_frames, frame_no_RFO, mapping, parameter);
      if abs(lenna_frames{idx}-lenna_framesWP{idx})<1e-4
